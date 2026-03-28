@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 const STEPS = [
   'Extracting Frames',
   'Detecting Pose',
@@ -6,7 +8,17 @@ const STEPS = [
   'Generating Instructions',
 ]
 
-function Progress({ currentStep }) {
+function Progress({ currentStep, onStepChange, loading }) {
+  const timerRef = useRef(null)
+
+  useEffect(() => {
+    if (loading && onStepChange) {
+      timerRef.current = setInterval(() => {
+        onStepChange((s) => (s < 5 ? s + 1 : s))
+      }, 4000)
+    }
+    return () => clearInterval(timerRef.current)
+  }, [loading, onStepChange])
   return (
     <div className="progress-stepper">
       {STEPS.map((label, i) => {

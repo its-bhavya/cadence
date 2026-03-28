@@ -40,7 +40,8 @@
       "Bash(.venv/Scripts/python -c \"\nfrom api import app\nroutes = [\\(r.path, r.methods\\) for r in app.routes if hasattr\\(r, 'methods'\\)]\nfor path, methods in routes:\n    print\\(', '.join\\(methods\\), path\\)\n\" 2>/dev/null)",
       "Bash(npm create:*)",
       "Bash(npm install:*)",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(.venv/Scripts/python -c \"from api import app; print\\('API OK'\\)\" 2>/dev/null)"
     ]
   }
 }

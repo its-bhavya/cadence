@@ -6,7 +6,7 @@ import uuid
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from src.extractor import extract_frames
 from src.pose import detect_poses
@@ -81,9 +81,15 @@ async def analyze(file: UploadFile = File(...)):
             "skeleton_video_url": f"/video/{skeleton_filename}",
         }
     except ValueError as e:
-        raise HTTPException(status_code=422, detail=str(e))
+        return JSONResponse(
+            status_code=422,
+            content={"message": str(e), "detail": str(e)},
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Pipeline error: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={"message": f"Pipeline error: {e}", "detail": f"Pipeline error: {e}"},
+        )
     finally:
         if os.path.exists(video_path):
             os.remove(video_path)

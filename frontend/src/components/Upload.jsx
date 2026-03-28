@@ -1,37 +1,22 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import axios from 'axios'
-import Progress from './Progress'
 
 const ACCEPTED_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 
-function Upload({ onResult }) {
+function Upload({ onStart, onResult, onError }) {
   const [file, setFile] = useState(null)
   const [preview, setPreview] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState(null)
+  const [localError, setLocalError] = useState(null)
   const [dragOver, setDragOver] = useState(false)
-  const [step, setStep] = useState(0)
   const inputRef = useRef(null)
-  const timerRef = useRef(null)
-
-  useEffect(() => {
-    if (uploading) {
-      setStep(1)
-      timerRef.current = setInterval(() => {
-        setStep((s) => (s < 5 ? s + 1 : s))
-      }, 4000)
-    } else {
-      clearInterval(timerRef.current)
-    }
-    return () => clearInterval(timerRef.current)
-  }, [uploading])
 
   const handleFile = useCallback((selected) => {
-    setError(null)
+    setLocalError(null)
     if (!selected) return
 
     if (!ACCEPTED_TYPES.includes(selected.type)) {
-      setError('Please select an MP4, MOV, or WebM video file.')
+      setLocalError('Please select an MP4, MOV, or WebM video file.')
       return
     }
 
@@ -59,7 +44,8 @@ function Upload({ onResult }) {
   const handleSubmit = async () => {
     if (!file) return
     setUploading(true)
-    setError(null)
+    setLocalError(null)
+    onStart()
 
     const formData = new FormData()
     formData.append('file', file)
@@ -68,12 +54,11 @@ function Upload({ onResult }) {
       const res = await axios.post('/api/analyze', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      setStep(6)
       onResult(res.data)
     } catch (err) {
-      const msg = err.response?.data?.detail || err.message || 'Upload failed'
-      setError(msg)
-      setStep(0)
+      const data = err.response?.data
+      const msg = data?.message || data?.detail || err.message || 'Upload failed'
+      onError(msg)
     } finally {
       setUploading(false)
     }
@@ -111,9 +96,7 @@ function Upload({ onResult }) {
         )}
       </div>
 
-      {uploading && <Progress currentStep={step} />}
-
-      {error && <p className="upload-error">{error}</p>}
+      {localError && <p className="upload-error">{localError}</p>}
 
       <button
         className="upload-btn"
