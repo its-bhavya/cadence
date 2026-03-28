@@ -91,3 +91,68 @@ Respond with ONLY valid JSON, no markdown or extra text. Use this exact format:
         }
         for i, s in enumerate(steps)
     ]
+
+
+def generate_form_feedback(exercise_name: str, signature: dict) -> list[dict]:
+    """Generate form feedback for an exercise using Gemini.
+
+    Args:
+        exercise_name: Name of the classified exercise.
+        signature: Movement signature dict from extract_movement_signature().
+
+    Returns:
+        List of dicts with issue, detectable_from_pose (bool), and correction.
+
+    Raises:
+        ValueError: If GEMINI_API_KEY environment variable is not set.
+    """
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY environment variable is not set")
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-flash-latest")
+
+    prompt = f"""You are a certified personal trainer and movement analyst.
+
+Exercise: {exercise_name}
+Movement details:
+- Primary joints moving: {', '.join(signature.get('primary_joints_moving', []))}
+- Movement axis: {signature.get('movement_axis', 'unknown')}
+- Range of motion: {signature.get('range_of_motion', 'unknown')}
+- Symmetry: {signature.get('symmetry', 'unknown')}
+- Body position: {signature.get('body_position', 'unknown')}
+
+Identify up to 5 common form mistakes people make when performing this exercise. For each mistake, indicate whether it could be detected from 2D pose landmark data alone (x/y/z joint coordinates over time), and provide a corrective cue.
+
+Respond with ONLY valid JSON, no markdown or extra text. Use this exact format:
+[
+  {{"issue": "description of the form mistake", "detectable_from_pose": true, "correction": "corrective cue"}},
+  {{"issue": "...", "detectable_from_pose": false, "correction": "..."}}
+]"""
+
+    response = model.generate_content(prompt)
+    raw = response.text.strip()
+
+    try:
+        items = json.loads(raw)
+    except json.JSONDecodeError:
+        cleaned = raw
+        if "```" in cleaned:
+            cleaned = cleaned.split("```")[1]
+            if cleaned.startswith("json"):
+                cleaned = cleaned[4:]
+            cleaned = cleaned.strip()
+        try:
+            items = json.loads(cleaned)
+        except json.JSONDecodeError:
+            items = []
+
+    return [
+        {
+            "issue": item.get("issue", ""),
+            "detectable_from_pose": bool(item.get("detectable_from_pose", False)),
+            "correction": item.get("correction", ""),
+        }
+        for item in items
+    ]
