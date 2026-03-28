@@ -4,7 +4,8 @@ import argparse
 
 from src.extractor import extract_frames
 from src.pose import detect_poses
-from src.counter import extract_joint_trajectory, count_reps
+from src.counter import extract_joint_trajectory, count_reps, extract_movement_signature
+from src.classifier import classify_exercise
 
 
 def main():
@@ -16,23 +17,34 @@ def main():
     parser.add_argument("--verbose", action="store_true", help="Print each pipeline stage with timing")
     args = parser.parse_args()
 
-    print(f"[1/4] Extracting frames from {args.input}...")
+    # Phase 1: Extract, detect, count
+    print(f"[1/6] Extracting frames from {args.input}...")
     frames = extract_frames(args.input)
 
-    print(f"[2/4] Running pose detection...")
+    print(f"[2/6] Running pose detection...")
     frames = detect_poses(frames)
 
-    print(f"[3/4] Extracting joint trajectory (joint {args.joints})...")
+    print(f"[3/6] Extracting joint trajectory (joint {args.joints})...")
     trajectory = extract_joint_trajectory(frames, args.joints)
 
-    print(f"[4/4] Counting reps...")
+    print(f"[4/6] Counting reps...")
     rep_data = count_reps(trajectory)
 
+    # Phase 2: Classify
+    print(f"[5/6] Analyzing movement signature...")
+    signature = extract_movement_signature(frames)
+
+    print(f"[6/6] Classifying exercise via Gemini...")
+    classification = classify_exercise(signature, rep_data["rep_count"])
+
+    # Summary
     valid_poses = sum(1 for f in frames if f["landmarks"] is not None)
+    muscles = ", ".join(classification["muscles_worked"])
     print()
     print(f"Frames extracted:   {len(frames)}")
     print(f"Frames with pose:   {valid_poses}")
-    print(f"Rep count:          {rep_data['rep_count']}")
+    print()
+    print(f"{classification['exercise_name'].title()} ({classification['confidence']} confidence) - {rep_data['rep_count']} reps - {muscles}")
 
 
 if __name__ == "__main__":
