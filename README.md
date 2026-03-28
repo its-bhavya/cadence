@@ -1,6 +1,6 @@
 # Cadence
 
-Accessibility-first workout video analysis — paste a YouTube URL or upload a video and get structured instructions, audio narration, and form feedback in seconds.
+Accessibility-first workout video analysis — upload a video and get structured instructions, audio narration, and form feedback in seconds.
 
 ## Requirements
 
@@ -42,10 +42,10 @@ Cadence analyzes a workout video and returns five things:
 
 ## How It Works
 
-1. User pastes a YouTube URL or uploads a video file (MP4, WebM, MOV)
-2. The backend sends the video directly to Gemini's native video understanding (no frame extraction, no pose estimation)
-3. Gemini watches the full video and detects every exercise in order
-4. It returns structured JSON with timestamps, instructions, form cues, and narration for each exercise
-5. The backend parses and validates the JSON response
+1. User uploads a video file (MP4, WebM, MOV)
+2. The backend extracts frames and runs MediaPipe pose detection
+3. Joint trajectories are analyzed to count reps and extract movement signatures
+4. The movement signature is sent to Gemini to classify the exercise
+5. Gemini generates step-by-step instructions and form feedback based on the classification
 6. The frontend renders all five output types simultaneously
 7. Audio narration plays via the browser's built-in Web Speech API (no paid TTS)
