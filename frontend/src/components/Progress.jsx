@@ -48,27 +48,33 @@ function Progress({ currentStep, onStepChange, loading }) {
           flex-direction: column;
           gap: 0;
           width: 100%;
-          max-width: 300px;
+          max-width: 320px;
+          margin: 48px auto 0;
+          padding: 32px;
+          background: #fff;
+          border-radius: 12px;
+          border: 1px solid #e5e5e5;
         }
 
         .progress-step {
           display: grid;
-          grid-template-columns: 28px 1fr;
-          grid-template-rows: 28px auto;
-          column-gap: 12px;
+          grid-template-columns: 32px 1fr;
+          grid-template-rows: 32px auto;
+          column-gap: 14px;
         }
 
         .progress-step__indicator {
           grid-column: 1;
           grid-row: 1;
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 14px;
           flex-shrink: 0;
+          transition: background 0.3s, border-color 0.3s;
         }
 
         .progress-step--complete .progress-step__indicator {
@@ -82,7 +88,7 @@ function Progress({ currentStep, onStepChange, loading }) {
         }
 
         .progress-step--pending .progress-step__indicator {
-          background: #eee;
+          background: #f0f0f0;
         }
 
         .progress-step__label {
@@ -90,7 +96,8 @@ function Progress({ currentStep, onStepChange, loading }) {
           grid-row: 1;
           align-self: center;
           font-size: 0.95rem;
-          color: #888;
+          color: #999;
+          transition: color 0.3s;
         }
 
         .progress-step--complete .progress-step__label {
@@ -108,8 +115,9 @@ function Progress({ currentStep, onStepChange, loading }) {
           grid-row: 2;
           width: 2px;
           height: 24px;
-          background: #ddd;
+          background: #e5e5e5;
           justify-self: center;
+          transition: background 0.3s;
         }
 
         .progress-step__line--filled {
@@ -125,12 +133,12 @@ function Progress({ currentStep, onStepChange, loading }) {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: #bbb;
+          background: #ccc;
         }
 
         .spinner {
-          width: 14px;
-          height: 14px;
+          width: 16px;
+          height: 16px;
           border: 2px solid #ddd;
           border-top-color: #1a1a1a;
           border-radius: 50%;

@@ -97,24 +97,36 @@ function Results({ data }) {
       <style>{`
         .results {
           width: 100%;
-          max-width: 700px;
+          max-width: 720px;
           display: flex;
           flex-direction: column;
-          gap: 32px;
+          gap: 0;
         }
 
         .results h3 {
           font-size: 1.1rem;
           font-weight: 600;
-          margin: 0 0 12px;
+          margin: 0 0 14px;
           color: #1a1a1a;
+        }
+
+        /* Sections get card treatment with visual separation */
+        .results__header,
+        .results__video-section,
+        .results__instructions,
+        .results__feedback {
+          background: #fff;
+          border: 1px solid #e5e5e5;
+          border-radius: 12px;
+          padding: 24px;
+          margin-bottom: 16px;
         }
 
         /* Header */
         .results__header {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
         }
 
         .results__title-row {
@@ -125,24 +137,25 @@ function Results({ data }) {
         }
 
         .results__name {
-          font-size: 2rem;
+          font-size: 1.8rem;
           font-weight: 700;
           margin: 0;
           color: #1a1a1a;
+          letter-spacing: -0.02em;
         }
 
         .results__badge {
-          padding: 2px 10px;
+          padding: 3px 12px;
           border-radius: 20px;
           color: #fff;
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
         .results__reps {
-          font-size: 1.2rem;
+          font-size: 1.15rem;
           color: #555;
           margin: 0;
         }
@@ -151,14 +164,16 @@ function Results({ data }) {
           display: flex;
           flex-wrap: wrap;
           gap: 6px;
+          margin-top: 4px;
         }
 
         .results__tag {
-          padding: 3px 10px;
+          padding: 4px 12px;
           border-radius: 6px;
           background: #f3f4f6;
           color: #374151;
           font-size: 0.85rem;
+          font-weight: 500;
         }
 
         /* Video */
@@ -169,7 +184,7 @@ function Results({ data }) {
 
         .results__video {
           width: 100%;
-          border-radius: 10px;
+          border-radius: 8px;
           background: #000;
         }
 
@@ -186,7 +201,7 @@ function Results({ data }) {
 
         .results__step {
           counter-increment: step;
-          padding-left: 32px;
+          padding-left: 36px;
           position: relative;
           line-height: 1.6;
         }
@@ -195,9 +210,9 @@ function Results({ data }) {
           content: counter(step);
           position: absolute;
           left: 0;
-          top: 0;
-          width: 22px;
-          height: 22px;
+          top: 1px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           background: #1a1a1a;
           color: #fff;
@@ -213,7 +228,7 @@ function Results({ data }) {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.8px;
-          color: #888;
+          color: #999;
         }
 
         .results__instruction {
@@ -241,11 +256,15 @@ function Results({ data }) {
           margin: 0;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 14px;
         }
 
         .results__feedback-item {
           line-height: 1.6;
+          padding: 12px 16px;
+          background: #fafafa;
+          border-radius: 8px;
+          border: 1px solid #eee;
         }
 
         .results__feedback-header {
@@ -256,7 +275,7 @@ function Results({ data }) {
         }
 
         .results__detect-badge {
-          padding: 1px 8px;
+          padding: 2px 8px;
           border-radius: 4px;
           font-size: 0.75rem;
           font-weight: 500;
@@ -264,7 +283,7 @@ function Results({ data }) {
         }
 
         .results__correction {
-          margin: 4px 0 0;
+          margin: 6px 0 0;
           color: #555;
           font-size: 0.9rem;
         }

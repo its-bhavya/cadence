@@ -111,45 +111,58 @@ function Upload({ onStart, onResult, onError }) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 16px;
+          gap: 20px;
           width: 100%;
           max-width: 560px;
         }
 
         .drop-zone {
           width: 100%;
-          min-height: 240px;
-          border: 2px dashed #ccc;
+          min-height: 260px;
+          border: 2px dashed #bbb;
           border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: border-color 0.2s, background 0.2s;
+          transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
           overflow: hidden;
+          background: #fff;
         }
 
-        .drop-zone:hover,
+        .drop-zone:hover {
+          border-color: #888;
+          background: #f8f8f8;
+        }
+
         .drop-zone--active {
-          border-color: #555;
-          background: #fafafa;
+          border-color: #1a1a1a;
+          border-style: dashed;
+          background: #f0f0f0;
+          box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.08);
         }
 
         .drop-zone__prompt {
           text-align: center;
-          color: #888;
-          padding: 32px;
+          color: #666;
+          padding: 40px 32px;
         }
 
         .drop-zone__icon {
-          font-size: 2rem;
-          margin-bottom: 8px;
+          font-size: 2.4rem;
+          margin-bottom: 12px;
+          color: #999;
+        }
+
+        .drop-zone__prompt > p:nth-child(2) {
+          font-size: 1rem;
+          font-weight: 500;
         }
 
         .drop-zone__hint {
           font-size: 0.85rem;
           color: #aaa;
-          margin-top: 4px;
+          margin-top: 6px;
         }
 
         .preview-video {
@@ -165,7 +178,7 @@ function Upload({ onStart, onResult, onError }) {
         }
 
         .upload-btn {
-          padding: 12px 32px;
+          padding: 12px 36px;
           font-size: 1rem;
           font-weight: 600;
           border: none;
@@ -173,15 +186,16 @@ function Upload({ onStart, onResult, onError }) {
           background: #1a1a1a;
           color: #fff;
           cursor: pointer;
-          transition: opacity 0.2s;
+          transition: opacity 0.15s, transform 0.15s;
         }
 
         .upload-btn:hover:not(:disabled) {
-          opacity: 0.85;
+          opacity: 0.88;
+          transform: translateY(-1px);
         }
 
         .upload-btn:disabled {
-          background: #999;
+          background: #bbb;
           cursor: not-allowed;
         }
       `}</style>

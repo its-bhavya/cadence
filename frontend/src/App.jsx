@@ -82,7 +82,7 @@ function App() {
           align-items: center;
           padding: 0 24px;
           background: #fff;
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid #e5e5e5;
           z-index: 100;
         }
 
@@ -91,15 +91,19 @@ function App() {
           font-weight: 700;
           color: #1a1a1a;
           cursor: pointer;
+          letter-spacing: -0.02em;
         }
 
         .app-main {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 80px 20px 48px;
+          padding: 88px 24px 64px;
           gap: 24px;
           min-height: 100vh;
+          max-width: 960px;
+          margin: 0 auto;
+          width: 100%;
         }
 
         .app-error-banner {
@@ -128,8 +132,8 @@ function App() {
         }
 
         .app-reset-btn {
-          margin-top: 8px;
-          padding: 10px 24px;
+          margin-top: 12px;
+          padding: 12px 28px;
           font-size: 0.95rem;
           font-weight: 600;
           border: 2px solid #1a1a1a;
@@ -137,11 +141,12 @@ function App() {
           background: #fff;
           color: #1a1a1a;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: background 0.15s, transform 0.15s;
         }
 
         .app-reset-btn:hover {
-          background: #f5f5f5;
+          background: #f0f0f0;
+          transform: translateY(-1px);
         }
       `}</style>
     </>
