@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import axios from 'axios'
+import Progress from './Progress'
 
 const ACCEPTED_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
 
@@ -9,7 +10,21 @@ function Upload({ onResult }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
   const [dragOver, setDragOver] = useState(false)
+  const [step, setStep] = useState(0)
   const inputRef = useRef(null)
+  const timerRef = useRef(null)
+
+  useEffect(() => {
+    if (uploading) {
+      setStep(1)
+      timerRef.current = setInterval(() => {
+        setStep((s) => (s < 5 ? s + 1 : s))
+      }, 4000)
+    } else {
+      clearInterval(timerRef.current)
+    }
+    return () => clearInterval(timerRef.current)
+  }, [uploading])
 
   const handleFile = useCallback((selected) => {
     setError(null)
@@ -53,10 +68,12 @@ function Upload({ onResult }) {
       const res = await axios.post('/api/analyze', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
+      setStep(6)
       onResult(res.data)
     } catch (err) {
       const msg = err.response?.data?.detail || err.message || 'Upload failed'
       setError(msg)
+      setStep(0)
     } finally {
       setUploading(false)
     }
@@ -93,6 +110,8 @@ function Upload({ onResult }) {
           </div>
         )}
       </div>
+
+      {uploading && <Progress currentStep={step} />}
 
       {error && <p className="upload-error">{error}</p>}
 
