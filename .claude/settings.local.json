@@ -41,7 +41,10 @@
       "Bash(npm create:*)",
       "Bash(npm install:*)",
       "Bash(npx vite:*)",
-      "Bash(.venv/Scripts/python -c \"from api import app; print\\('API OK'\\)\" 2>/dev/null)"
+      "Bash(.venv/Scripts/python -c \"from api import app; print\\('API OK'\\)\" 2>/dev/null)",
+      "Bash(/c/Users/Bhavya/Desktop/projects/cadence/.venv/Scripts/python.exe -m pip install -r /c/Users/Bhavya/Desktop/projects/cadence/requirements.txt)",
+      "Bash(/c/Users/Bhavya/Desktop/projects/cadence/.venv/Scripts/python.exe -c \"import fastapi, google.generativeai; print\\('all good'\\)\")",
+      "Bash(cd:*)"
     ]
   }
 }
